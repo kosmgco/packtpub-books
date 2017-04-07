@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Books Free Learning</title>
+    <link href="//cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <script src="//cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+    <script src="//cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <style>
+        body {
+            width: 1000px;
+            margin: 0 auto;
+        }
+
+        div {
+            margin-top: 5px;
+        }
+
+        .download-btn {
+            float: right;
+        }
+    </style>
+</head>
+<body>
+<center>
+    <h3>
+        Packtpub Free Learning eBooks
+    </h3>
+</center>
+<div class="container-fluid">
+    <div class="row">
+    </div>
+</div>
+<footer>
+    <center>
+        <img src="//assets.qiniu.com/v2/qiniu-white-195x105.png?ref=developer.qiniu.com"/>
+    </center>
+</footer>
+</body>
+<script>
+    $(function () {
+        $.ajax({
+            url: 'http://localhost:5000',
+            type: "get",
+            dataType: "jsonp",
+            success: function (data) {
+                var allHtml = '';
+                for (var date in data) {
+                    console.log(data[date]);
+                    var html = '<fieldset> ' +
+                            '<legend>' + date +
+                            '</legend>' +
+                            '<a href="https://www.packtpub.com/all?search=' + data[date].name + '">' + data[date].name + '</a>' +
+                            '<div class="download-btn">' +
+                            '<div class="btn-group">' +
+                            '<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"' +
+                            'aria-haspopup="true" aria-expanded="false">' +
+                            'Download <span class="caret"></span> ' +
+                            '</button><ul class="dropdown-menu">';
+                    var keys = data[date].keys;
+                    for (var index in keys) {
+                        html += '<li><a href="' + data[date].domain + '' + keys[index] + '">' + keys[index].split('.').pop() + '</a></li>';
+                    }
+                    html += '</ul></div>' +
+                            '</div>' +
+                            '</fieldset>'
+                    allHtml += html
+                }
+                $('.row').append(allHtml)
+            }
+        })
+    })
+</script>
+</html>
